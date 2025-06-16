@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create Avatar</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<script src="script.js"></script>
+<body>
+<div class="sidebar">
+  <a href="index.html"><img src="https://img.icons8.com/ios-filled/50/fire-element.png" alt="Logo"></a>
+  <a href="new_avatar.html"><img src="https://img.icons8.com/ios-filled/50/plus.png" alt="Create Avatar"></a>
+  <a href="all_avatars.html"><img src="https://img.icons8.com/ios-filled/50/menu.png" alt="All Avatars"></a>
+</div>
+
+  </div>
+
+  <div class="main create-avatar">
+    <h1>Create a new Avatar</h1>
+
+    <div class="avatar-content">
+      <!-- Left: Form -->
+      <div class="form-section">
+        <h2>Choose your variables</h2>
+        <div class="form-grid">
+        <select id="age" data-key="age">
+            <option value="">Age</option>
+            <option value="5">5</option>
+            <option value="8">8</option>
+            <option value="12">12</option>
+            <option value="16">16</option>
+          </select>
+
+          <select id="primary_action" data-key="primary_action">
+            <option value="">Primary Action</option>
+            <option value="running">Running</option>
+            <option value="reading">Reading</option>
+            <option value="drawing">Drawing</option>
+            <option value="playing football">Playing Football</option>
+          </select>
+
+          <select id="gender" data-key="gender">
+            <option value="">Gender</option>
+            <option value="boy">Boy</option>
+            <option value="girl">Girl</option>
+            <option value="non-binary">Non-binary</option>
+          </select>
+
+          <select id="context_activity" data-key="context_activity">
+            <option value="">Context Activity</option>
+            <option value="in a classroom">In a Classroom</option>
+            <option value="at the park">At the Park</option>
+            <option value="at home">At Home</option>
+            <option value="on a sports field">On a Sports Field</option>
+          </select>
+
+          <select id="skin_colour" data-key="skin_colour">
+            <option value="">Skin Colour</option>
+            <option value="light-skinned">Light-skinned</option>
+            <option value="medium-skinned">Medium-skinned</option>
+            <option value="dark-skinned">Dark-skinned</option>
+          </select>
+
+          <select id="expression" data-key="expression">
+            <option value="">Expression</option>
+            <option value="happy">Happy</option>
+            <option value="serious">Serious</option>
+            <option value="surprised">Surprised</option>
+            <option value="confused">Confused</option>
+          </select>
+
+          <select id="batch_size" data-key="batch_size">
+            <option value="">Batch Size</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
+        </div>
+
+        
+        <h3>Validate the prompt</h3>
+        <div class="prompt-box" contenteditable="true">
+          A <span data-placeholder="skin_colour">{skin_colour}</span>
+            <span data-placeholder="age">{age}</span>-year-old 
+            <span data-placeholder="gender">{gender}</span>
+            <span data-placeholder="primary_action">{primary_action}</span> while 
+            <span data-placeholder="context_activity">{context_activity}</span>, with a 
+            <span data-placeholder="expression">{expression}</span> expression.
+        </div>
+
+
+        <button class="generate-btn">Generate</button>
+        <button class="generate-btn reset-btn">Reset Prompt</button>
+      </div>
+
+      <!-- Right: Avatar Selection -->
+      <div class="avatar-preview">
+        <h2>Your avatar</h2>
+        <p>Select the best picture</p>
+        <div class="avatar-grid">
+          <div class="avatar-placeholder"></div>
+          <div class="avatar-placeholder"></div>
+          <div class="avatar-placeholder"></div>
+          <div class="avatar-placeholder"></div>
+        </div>
+        <input type="text" placeholder="Enter name" />
+        <button class="save-btn">Save</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
