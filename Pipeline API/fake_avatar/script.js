@@ -74,10 +74,19 @@ document.addEventListener("DOMContentLoaded", () => {
         if (avatarGrid) {
           avatarGrid.innerHTML = ''; // Clear any placeholders or previous results
           avatars.forEach(url => {
+            const wrapper = document.createElement('div');
+            wrapper.classList.add('avatar-placeholder'); // Ensures uniform size
+
             const img = document.createElement('img');
-            img.src = `http://127.0.0.1:8189${url}`; // Adjust the URL as needed
-            img.classList.add('avatar-image'); // Optional for styling
-            avatarGrid.appendChild(img);
+            img.src = `http://127.0.0.1:8189${url}`;
+            img.alt = "Generated Avatar";
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'cover';
+            img.style.borderRadius = '10px';
+
+            wrapper.appendChild(img);
+            avatarGrid.appendChild(wrapper);
           });
         }
       })

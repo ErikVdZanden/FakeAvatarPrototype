@@ -1,3 +1,7 @@
+html, body {
+  height: 100%;
+}
+
 body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -9,13 +13,20 @@ body {
   }
   
   .sidebar {
-    width: 60px;
-    background-color: #5c83b1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem 0;
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh; /* Full viewport height */
+  width: 60px;
+  background-color: #5c83b1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0;
+  overflow-y: auto; /* Make sidebar scrollable if content overflows */
+  z-index: 10; /* Keep it above main content if needed */
+}
+
   
   .sidebar img {
     width: 30px;
@@ -23,6 +34,7 @@ body {
   }
   
   .main {
+    margin-left: 60px; /* Shift content right to make room for sidebar */
     flex: 1;
     padding: 2rem;
     background-image: url('https://example.com/background.jpg'); /* Replace with your image URL */
@@ -30,7 +42,7 @@ body {
     background-position: center;
     background-size: 80%;
   }
-  
+    
   h1 {
     font-size: 2rem;
     margin: 0;
@@ -235,7 +247,19 @@ body {
 .avatar-placeholder {
   background-color: #ccc;
   border-radius: 10px;
-  height: 100px;
+  width: 100%;          /* Ensure grid cell usage */
+  aspect-ratio: 1 / 1;  /* Square shape */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* or use 'contain' if you want letterbox effect */
+  border-radius: 10px;
 }
 
 .avatar-preview input {
