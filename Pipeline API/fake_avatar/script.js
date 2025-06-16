@@ -32,7 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const batchSize = document.getElementById("batch_size").value; // default to 1
       console.log("Batch size:", batchSize);
 
-
       const promptBox = document.querySelector('.prompt-box');
       if (!promptBox) return;
 
@@ -41,15 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Debug: log the prompt
       console.log("Sending prompt:", promptText, batchSize);
-
-      // Send it to the API
-      // fetch('http://127.0.0.1:8189/generate', { 
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify({ prompt: promptText })
-      // })
 
       fetch('http://127.0.0.1:8189/generate', {
         method: 'POST',
