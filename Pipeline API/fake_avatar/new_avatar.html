@@ -9,18 +9,18 @@
 <script src="script.js"></script>
 <body>
 <div class="sidebar">
-  <a href="index.html"><img src="https://img.icons8.com/ios-filled/50/fire-element.png" alt="Logo"></a>
+  <a href="index.html"><img src="assets/images/logo.svg" alt="Logo"></a>
   <a href="new_avatar.html"><img src="https://img.icons8.com/ios-filled/50/plus.png" alt="Create Avatar"></a>
   <a href="all_avatars.html"><img src="https://img.icons8.com/ios-filled/50/menu.png" alt="All Avatars"></a>
 </div>
 
   <div class="main create-avatar">
-    <h1>Create a new Avatar</h1>
+    <h2>Create a new Avatar</h2>
 
     <div class="avatar-content">
       <!-- Left: Form -->
       <div class="form-section">
-        <h2>Choose your variables</h2>
+        <h1>Choose your variables</h1>
         <div class="form-grid">
         <select id="age" data-key="age">
             <option value="">Age</option>
@@ -94,17 +94,31 @@
       </div>
 
       <!-- Right: Avatar Selection -->
-      <div class="avatar-preview">
-        <h2>Your avatar</h2>
-        <p>Select the best picture</p>
-        <div class="avatar-grid">
-          <div class="avatar-placeholder"></div>
-          <div class="avatar-placeholder"></div>
-          <div class="avatar-placeholder"></div>
-          <div class="avatar-placeholder"></div>
+
+      <div class="avatar-display">
+        <div class="avatar-header">
+          <h1>Your avatar</h1>
         </div>
-        <input type="text" placeholder="Enter name" />
-        <button class="save-btn">Save</button>
+
+        <div class="avatar-preview"> 
+          <h3>Select the best picture</h3>    
+          <div class="avatar-grid">
+            <div class="avatar-placeholder"></div>
+            <div class="avatar-placeholder"></div>
+            <div class="avatar-placeholder"></div>
+            <div class="avatar-placeholder"></div>
+          </div>
+          <input type="text" placeholder="Enter name" />
+          <button class="save-btn">Save</button>
+        </div>
+      </div>
+
+      <!-- Modal Overlay -->
+    <div id="avatar-modal" class="avatar-modal hidden">
+      <div class="modal-content">
+        <div class="modal-avatar"></div>
+        <button id="select-avatar-btn" class="select-btn">Select</button>
+        <button id="close-modal-btn" class="close-btn">x</button>
       </div>
     </div>
   </div>

@@ -8,27 +8,50 @@
 </head>
 <body>
   <div class="sidebar">
-    <a href="index.html"><img src="https://img.icons8.com/ios-filled/50/fire-element.png" alt="Logo"></a>
+    <a href="index.html"><img src="assets/images/logo.svg" alt="Logo"></a>
     <a href="new_avatar.html"><img src="https://img.icons8.com/ios-filled/50/plus.png" alt="Create Avatar"></a>
     <a href="all_avatars.html"><img src="https://img.icons8.com/ios-filled/50/menu.png" alt="All Avatars"></a>
   </div>
 
   <div class="main avatars-list">
-    <h1>All Avatars</h1>
+    <h2>All Avatars</h2>
 
     <div class="search-bar">
       <input type="text" placeholder="Search" />
       <button><img src="https://img.icons8.com/ios-filled/24/filter.png" alt="Filter" /> Filter</button>
     </div>
 
-    <div class="avatars-grid">
-      <div class="avatar-card"><img src="https://via.placeholder.com/150" /><p>Mirjam</p></div>
-      <div class="avatar-card"><img src="https://via.placeholder.com/150" /><p>Karel</p></div>
-      <div class="avatar-card"><img src="https://via.placeholder.com/150" /><p>Pieter</p></div>
-      <div class="avatar-card"><img src="https://via.placeholder.com/150" /><p>Alyssa</p></div>
-      <div class="avatar-card"><img src="https://via.placeholder.com/150" /><p>Merel</p></div>
-      <div class="avatar-card"><img src="https://via.placeholder.com/150" /><p>Rick</p></div>
-    </div>
+    <div class="avatars-grid"></div>
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const avatarsGrid = document.querySelector(".avatars-grid");
+      const savedAvatars = JSON.parse(localStorage.getItem("avatars")) || [];
+
+      avatarsGrid.innerHTML = ""; // Clear the placeholder content
+
+      if (savedAvatars.length === 0) {
+        avatarsGrid.innerHTML = "<p>No avatars saved yet.</p>";
+      } else {
+        savedAvatars.forEach(({ name, img }) => {
+          const card = document.createElement("div");
+          card.classList.add("avatar-card");
+
+          const image = document.createElement("img");
+          image.src = img;
+          image.alt = name;
+
+          const label = document.createElement("p");
+          label.textContent = name;
+
+          card.appendChild(image);
+          card.appendChild(label);
+
+          avatarsGrid.appendChild(card);
+        });
+      }
+    });
+  </script>
 </body>
 </html>
