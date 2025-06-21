@@ -25,7 +25,7 @@ def generate():
         for node_id, image_datas in images_dict.items():
             for idx, image_data in enumerate(image_datas):
                 img = Image.open(io.BytesIO(image_data))
-                filename = f"{node_id}-{seed}-{idx}.png"
+                filename = f"{seed}-{idx}.png"
                 filepath = os.path.join(output_dir, filename)
                 img.save(filepath)
                 image_paths.append(f"/static/outputs/{filename}")
