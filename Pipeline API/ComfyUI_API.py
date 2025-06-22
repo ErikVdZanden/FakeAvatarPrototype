@@ -15,7 +15,7 @@ print(colored("Step 1: Initialize the connection settings and load environment v
 print(colored("Loading configuration from the .env file.", "yellow"))
 load_dotenv()
 
-# Get server address from environment variable, default to "localhost:8188" 
+# Get server address from environment variable, default to "localhost:8188"
 server_address = os.getenv('COMFYUI_SERVER_ADDRESS', 'localhost:8188')
 client_id = str(uuid.uuid4())
 

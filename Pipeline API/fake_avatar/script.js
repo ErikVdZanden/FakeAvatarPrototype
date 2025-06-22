@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (generateBtn) {
     generateBtn.addEventListener('click', () => {
       console.log("✅ Generate button was clicked");
+      alert("✅ Successfully started generating!");
 
       const batchSize = document.getElementById("batch_size").value;
       console.log("Batch size:", batchSize);
@@ -146,38 +147,50 @@ document.addEventListener("DOMContentLoaded", () => {
   // ----------- Save Avatar Logic -----------
 
   const saveBtn = document.querySelector(".save-btn");
-  const nameInput = document.querySelector(".avatar-name-input");
+const nameInput = document.querySelector(".avatar-preview input");
 
-  if (saveBtn) {
-    saveBtn.addEventListener("click", () => {
-      const selected = document.querySelector(".avatar-placeholder.selected img");
-      const avatarName = nameInput.value.trim();
+if (saveBtn) {
+  saveBtn.addEventListener("click", () => {
+    const selected = document.querySelector(".avatar-placeholder.selected img");
+    const avatarName = nameInput.value.trim();
 
-      if (!selected) {
-        alert("Please select an avatar image.");
-        return;
-      }
+    if (!selected) {
+      alert("Please select an avatar image.");
+      return;
+    }
 
-      if (!avatarName) {
-        alert("Please enter a name for the avatar.");
-        return;
-      }
+    if (!avatarName) {
+      alert("Please enter a name for the avatar.");
+      return;
+    }
 
-      const selectedImageSrc = selected.src;
-      const existingAvatars = JSON.parse(localStorage.getItem("avatars")) || [];
+    const selectedImageSrc = selected.src;
 
-      existingAvatars.push({
+    fetch('http://127.0.0.1:8189/saveImage', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
         name: avatarName,
         img: selectedImageSrc
-      });
-
-      localStorage.setItem("avatars", JSON.stringify(existingAvatars));
-
+      })
+    })
+    .then(res => {
+      if (!res.ok) throw new Error("Failed to save avatar.");
+      return res.json();
+    })
+    .then(response => {
       alert("✅ Avatar saved successfully!");
       nameInput.value = "";
       document.querySelectorAll('.avatar-placeholder').forEach(ph => ph.classList.remove('selected'));
+    })
+    .catch(err => {
+      console.error("❌ Error saving avatar:", err);
+      alert("There was a problem saving the avatar.");
     });
-  }
+  });
+}
 
   // ----------- Load Avatars on View Page -----------
 
