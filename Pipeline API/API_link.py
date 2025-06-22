@@ -64,6 +64,26 @@ def save_image():
         "saved_path": f"/static/saved_avatars/{name}/{filename}"
     })
 
+@app.route("/listAvatars", methods=["GET"])
+def list_avatars():
+    base_dir = os.path.join("static", "saved_avatars")
+    avatars = []
+
+    if not os.path.exists(base_dir):
+        return jsonify(avatars)
+
+    for folder in os.listdir(base_dir):
+        folder_path = os.path.join(base_dir, folder)
+        if os.path.isdir(folder_path):
+            for file in os.listdir(folder_path):
+                if file.lower().endswith((".png", ".jpg", ".jpeg")):
+                    avatars.append({
+                        "name": folder,
+                        "image": f"/static/saved_avatars/{folder}/{file}"
+                    })
+                    break
+
+    return jsonify(avatars)
 
 @app.route("/", methods=["GET"])
 def home():

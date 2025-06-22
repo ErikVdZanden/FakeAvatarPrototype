@@ -25,31 +25,37 @@
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", async () => {
       const avatarsGrid = document.querySelector(".avatars-grid");
-      const savedAvatars = JSON.parse(localStorage.getItem("avatars")) || [];
 
-      avatarsGrid.innerHTML = ""; // Clear the placeholder content
+      try {
+        const response = await fetch("http://127.0.0.1:8189/listAvatars");
+        if (!response.ok) throw new Error("Failed to load avatars");
 
-      if (savedAvatars.length === 0) {
-        avatarsGrid.innerHTML = "<p>No avatars saved yet.</p>";
-      } else {
-        savedAvatars.forEach(({ name, img }) => {
+        const avatars = await response.json();
+
+        if (avatars.length === 0) {
+          avatarsGrid.innerHTML = "<p>No avatars saved yet.</p>";
+          return;
+        }
+
+        avatars.forEach(({ name, image }) => {
           const card = document.createElement("div");
           card.classList.add("avatar-card");
 
-          const image = document.createElement("img");
-          image.src = img;
-          image.alt = name;
+          const img = document.createElement("img");
+          img.src = `http://127.0.0.1:8189${image}`;
+          img.alt = name;
 
           const label = document.createElement("p");
           label.textContent = name;
 
-          card.appendChild(image);
+          card.appendChild(img);
           card.appendChild(label);
-
           avatarsGrid.appendChild(card);
         });
+      } catch (err) {
+        avatarsGrid.innerHTML = `<p>Error loading avatars: ${err.message}</p>`;
       }
     });
   </script>
