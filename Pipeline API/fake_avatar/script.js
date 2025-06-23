@@ -2,8 +2,11 @@ console.log("✅ script.js is loaded");
 
 const initialPromptValues = {
   skin_colour: "{skin_colour}",
+  hair_colour: "{hair_colour}",
+  eye_colour: "{eye_colour}",
   age: "{age}",
   gender: "{gender}",
+  imperfections: "{imperfections}",
   primary_action: "{primary_action}",
   context_activity: "{context_activity}",
   expression: "{expression}"
@@ -34,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const promptBox = document.querySelector('.prompt-box');
       if (!promptBox) return;
 
-      const promptText = promptBox.textContent.trim();
+      const promptText = promptBox.innerText.replace(/\s+/g, ' ').trim();
       console.log("Sending prompt:", promptText, batchSize);
 
       fetch('http://127.0.0.1:8189/generate', {
@@ -93,11 +96,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const promptBox = document.querySelector('.prompt-box');
       if (promptBox) {
         promptBox.innerHTML =
-          `A <span data-placeholder="skin_colour">{skin_colour}</span> ` +
+          `A <span data-placeholder="skin_colour">{skin_colour}</span>, ` +
+          `<span data-placeholder="hair_colour">{hair_colour}</span>-haired, ` +
+          `<span data-placeholder="eye_colour">{eye_colour}</span>-eyed, ` +
           `<span data-placeholder="age">{age}</span>-year-old ` +
-          `<span data-placeholder="gender">{gender}</span> ` +
+          `<span data-placeholder="gender">{gender}</span> with ` +
+          `<span data-placeholder="imperfections">{imperfections}</span>, ` +
           `<span data-placeholder="primary_action">{primary_action}</span> while ` +
-          `<span data-placeholder="context_activity">{context_activity}</span>, with a ` +
+          `<span data-placeholder="context_activity">{context_activity}</span>, showing a ` +
           `<span data-placeholder="expression">{expression}</span> expression.`;
       }
     });
