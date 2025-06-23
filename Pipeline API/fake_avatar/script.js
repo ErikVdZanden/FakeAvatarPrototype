@@ -2,14 +2,14 @@ console.log("✅ script.js is loaded");
 
 const initialPromptValues = {
   skin_colour: "{skin_colour}",
-  hair_colour: "{hair_colour}",
-  eye_colour: "{eye_colour}",
   age: "{age}",
   gender: "{gender}",
-  imperfections: "{imperfections}",
   primary_action: "{primary_action}",
   context_activity: "{context_activity}",
-  expression: "{expression}"
+  expression: "{expression}",
+  hair_colour: "{hair_colour}",
+  eye_colour: "{eye_colour}",
+  imperfections: "{imperfections}"
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -25,6 +25,29 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  function buildBackendPrompt() {
+    const get = (key) => {
+      const span = document.querySelector(`.prompt-box [data-placeholder="${key}"]`);
+      return span ? span.textContent.trim() : '';
+    };
+
+    const age = get('age');
+    const gender = get('gender');
+    const primary_action = get('primary_action');
+    const context = get('context_activity');
+    const expression = get('expression');
+    const skin = get('skin_colour');
+    const hair = get('hair_colour');
+    const eyes = get('eye_colour');
+    const imperfections = get('imperfections');
+
+    const base = `((A ${age}-year-old ${gender}::1.5) ${primary_action} ${context}, ${hair} hair, ${eyes} eyes, (${imperfections}::1.3), (${expression} expression))`;
+    const background = `(The background is mostly white, with little detailes::1.2)`;
+    const nuance = `((KidV2 captures natural shadows::1.3) while (maintaining playful energy::1.4))`;
+
+    return `${base}, ${background}, ${nuance}.`;
+  }
+
   const generateBtn = document.querySelector('.generate-btn');
   if (generateBtn) {
     generateBtn.addEventListener('click', () => {
@@ -34,10 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const batchSize = document.getElementById("batch_size").value;
       console.log("Batch size:", batchSize);
 
-      const promptBox = document.querySelector('.prompt-box');
-      if (!promptBox) return;
-
-      const promptText = promptBox.innerText.replace(/\s+/g, ' ').trim();
+      const promptText = buildBackendPrompt();
       console.log("Sending prompt:", promptText, batchSize);
 
       fetch('http://127.0.0.1:8189/generate', {
@@ -50,37 +70,36 @@ document.addEventListener("DOMContentLoaded", () => {
           batch_size: batchSize
         })
       })
-      .then(response => {
-        if (!response.ok) throw new Error("Failed to generate avatar");
-        return response.json();
-      })
-      .then(data => {
-        const avatars = data.images || [];
+        .then(response => {
+          if (!response.ok) throw new Error("Failed to generate avatar");
+          return response.json();
+        })
+        .then(data => {
+          const avatars = data.images || [];
+          const avatarGrid = document.querySelector('.avatar-grid');
+          if (avatarGrid) {
+            avatarGrid.innerHTML = '';
+            avatars.forEach(url => {
+              const wrapper = document.createElement('div');
+              wrapper.classList.add('avatar-placeholder');
 
-        const avatarGrid = document.querySelector('.avatar-grid');
-        if (avatarGrid) {
-          avatarGrid.innerHTML = '';
-          avatars.forEach(url => {
-            const wrapper = document.createElement('div');
-            wrapper.classList.add('avatar-placeholder');
+              const img = document.createElement('img');
+              img.src = `http://127.0.0.1:8189${url}`;
+              img.alt = "Generated Avatar";
+              img.style.width = '100%';
+              img.style.height = '100%';
+              img.style.objectFit = 'cover';
+              img.style.borderRadius = '10px';
 
-            const img = document.createElement('img');
-            img.src = `http://127.0.0.1:8189${url}`;
-            img.alt = "Generated Avatar";
-            img.style.width = '100%';
-            img.style.height = '100%';
-            img.style.objectFit = 'cover';
-            img.style.borderRadius = '10px';
-
-            wrapper.appendChild(img);
-            avatarGrid.appendChild(wrapper);
-          });
-        }
-      })
-      .catch(error => {
-        console.error("Error generating avatar:", error);
-        alert("There was a problem generating the avatar.");
-      });
+              wrapper.appendChild(img);
+              avatarGrid.appendChild(wrapper);
+            });
+          }
+        })
+        .catch(error => {
+          console.error("Error generating avatar:", error);
+          alert("There was a problem generating the avatar.");
+        });
     });
   }
 
@@ -96,19 +115,20 @@ document.addEventListener("DOMContentLoaded", () => {
       const promptBox = document.querySelector('.prompt-box');
       if (promptBox) {
         promptBox.innerHTML =
-          `A <span data-placeholder="skin_colour">{skin_colour}</span>, ` +
-          `<span data-placeholder="hair_colour">{hair_colour}</span>-haired, ` +
-          `<span data-placeholder="eye_colour">{eye_colour}</span>-eyed, ` +
+          `A <span data-placeholder="skin_colour">{skin_colour}</span> ` +
           `<span data-placeholder="age">{age}</span>-year-old ` +
-          `<span data-placeholder="gender">{gender}</span> with ` +
-          `<span data-placeholder="imperfections">{imperfections}</span>, ` +
+          `<span data-placeholder="gender">{gender}</span> ` +
           `<span data-placeholder="primary_action">{primary_action}</span> while ` +
-          `<span data-placeholder="context_activity">{context_activity}</span>, showing a ` +
-          `<span data-placeholder="expression">{expression}</span> expression.`;
+          `<span data-placeholder="context_activity">{context_activity}</span>, with a ` +
+          `<span data-placeholder="expression">{expression}</span> expression. ` +
+          `<span data-placeholder="hair_colour">{hair_colour}</span> hair, ` +
+          `<span data-placeholder="eye_colour">{eye_colour}</span> eyes, ` +
+          `<span data-placeholder="imperfections">{imperfections}</span>.`;
       }
     });
   }
 
+  // Modal Logic
   const modal = document.getElementById('avatar-modal');
   const modalAvatar = modal.querySelector('.modal-avatar');
   const selectBtn = document.getElementById('select-avatar-btn');
@@ -150,56 +170,54 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ----------- Save Avatar Logic -----------
-
+  // Save Avatar
   const saveBtn = document.querySelector(".save-btn");
-const nameInput = document.querySelector(".avatar-preview input");
+  const nameInput = document.querySelector(".avatar-preview input");
 
-if (saveBtn) {
-  saveBtn.addEventListener("click", () => {
-    const selected = document.querySelector(".avatar-placeholder.selected img");
-    const avatarName = nameInput.value.trim();
+  if (saveBtn) {
+    saveBtn.addEventListener("click", () => {
+      const selected = document.querySelector(".avatar-placeholder.selected img");
+      const avatarName = nameInput.value.trim();
 
-    if (!selected) {
-      alert("Please select an avatar image.");
-      return;
-    }
+      if (!selected) {
+        alert("Please select an avatar image.");
+        return;
+      }
 
-    if (!avatarName) {
-      alert("Please enter a name for the avatar.");
-      return;
-    }
+      if (!avatarName) {
+        alert("Please enter a name for the avatar.");
+        return;
+      }
 
-    const selectedImageSrc = selected.src;
+      const selectedImageSrc = selected.src;
 
-    fetch('http://127.0.0.1:8189/saveImage', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: avatarName,
-        img: selectedImageSrc
+      fetch('http://127.0.0.1:8189/saveImage', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: avatarName,
+          img: selectedImageSrc
+        })
       })
-    })
-    .then(res => {
-      if (!res.ok) throw new Error("Failed to save avatar.");
-      return res.json();
-    })
-    .then(response => {
-      alert("✅ Avatar saved successfully!");
-      nameInput.value = "";
-      document.querySelectorAll('.avatar-placeholder').forEach(ph => ph.classList.remove('selected'));
-    })
-    .catch(err => {
-      console.error("❌ Error saving avatar:", err);
-      alert("There was a problem saving the avatar.");
+        .then(res => {
+          if (!res.ok) throw new Error("Failed to save avatar.");
+          return res.json();
+        })
+        .then(response => {
+          alert("✅ Avatar saved successfully!");
+          nameInput.value = "";
+          document.querySelectorAll('.avatar-placeholder').forEach(ph => ph.classList.remove('selected'));
+        })
+        .catch(err => {
+          console.error("❌ Error saving avatar:", err);
+          alert("There was a problem saving the avatar.");
+        });
     });
-  });
-}
+  }
 
-  // ----------- Load Avatars on View Page -----------
-
+  // Load saved avatars (if on that page)
   const avatarsGrid = document.querySelector(".avatars-grid");
   if (avatarsGrid) {
     const savedAvatars = JSON.parse(localStorage.getItem("avatars")) || [];
