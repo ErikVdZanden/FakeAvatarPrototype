@@ -158,17 +158,31 @@ h2 {
   }
 
   .sidebar {
-    flex-direction: row;
+    position: relative;        /* Changed from fixed */
+    height: 60px;            
     width: 100%;
+    flex-direction: row;
     justify-content: center;
-    padding: 0.5rem;
+    align-items: center;
+    padding: 1rem 0;           /* More vertical space */
+    gap: 1rem;                 /* Spacing between icons */
+    overflow: hidden;
+  }
+
+  .sidebar a {
+    flex-shrink: 0;            /* Prevent icons from being squeezed */
+    padding: 1rem;           /* Better touch targets */
   }
 
   .sidebar img {
-    margin: 0 1rem;
+    width: 30px;               /* Ensure consistent icon size */
+    height: 30px;
+    margin: 0;                 /* Reset margin */
+    filter: brightness(0) invert(1);
   }
 
   .main {
+    margin-left: 0;            /* No sidebar offset */
     padding: 1rem;
     background-size: contain;
   }
@@ -204,12 +218,14 @@ h2 {
 
   .sidebar img {
     width: 24px;
+    height: 24px;
   }
 
   .main {
     background-position: top;
   }
 }
+
 
 /* ====== Create Avatar Page ====== */
 .create-avatar h1 {
@@ -281,7 +297,7 @@ h2 {
 
 .avatar-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   margin: 1rem 0;
 }
