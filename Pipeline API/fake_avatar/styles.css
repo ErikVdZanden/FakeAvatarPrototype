@@ -248,16 +248,18 @@ h2 {
 
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
 
 .form-grid select {
+  width: 100%;
   padding: 0.75rem;
   border-radius: 12px;
   border: none;
   font-size: 1rem;
+  box-sizing: border-box;
 }
 
 /* ====== Prompt Box ====== */

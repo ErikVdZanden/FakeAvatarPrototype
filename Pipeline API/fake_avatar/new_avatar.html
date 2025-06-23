@@ -26,7 +26,6 @@
         <div class="form-grid">
           <select id="age" data-key="age">
             <option value="">Age</option>
-            <!-- age options -->
             <option value="7">7</option>
             <option value="8">8</option>
             <option value="9">9</option>
@@ -92,13 +91,13 @@
             <option value="making a peace sign">Making a peace sign</option>
           </select>
 
-          <select id="context_activity" data-key="context_activity">
-            <option value="">Context Activity</option>
-            <option value="sitting on the bed">Sitting on the bed</option>
-            <option value="sitting in a field">Sitting in a field</option>
-            <option value="lying_on a couch">Lying on a couch</option>
-            <option value="standing by a window">Standing by a window</option>
-            <option value="sitting in front of a white wall">Sitting in front of a white wall</option>
+          <select id="context" data-key="context">
+            <option value="">Context</option>
+            <option value="a bedroom with a messy bed">A bedroom with a messy bed</option>
+            <option value="a grassy field with a light blue sky">A grassy field with a light blue sky</option>
+            <option value="a living room with a couch">A living room with a couch</option>
+            <option value="a window with a green garden">A window with a green garden</option>
+            <option value="a white wall">A white wall</option>
           </select>
 
           <select id="expression" data-key="expression">
@@ -125,8 +124,6 @@
           </select>
         </div>
 
-
-        
         <h3>Validate the prompt</h3>
         <div class="prompt-box" contenteditable="true">
           A <span data-placeholder="skin_colour">{skin_colour}</span>,
@@ -134,19 +131,17 @@
           <span data-placeholder="eye_colour">{eye_colour}</span>-eyed,
           <span data-placeholder="age">{age}</span>-year-old
           <span data-placeholder="gender">{gender}</span> with
-          <span data-placeholder="imperfections">{imperfections}</span>,
-          <span data-placeholder="primary_action">{primary_action}</span> while
-          <span data-placeholder="context_activity">{context_activity}</span>, showing a
+          <span data-placeholder="imperfections">{imperfections}</span>, while
+          <span data-placeholder="primary_action">{primary_action}</span>, showing a
           <span data-placeholder="expression">{expression}</span> expression.
+          The background is <span data-placeholder="context">{context}</span>, with little details.
         </div>
-
 
         <button class="generate-btn">Generate</button>
         <button class="generate-btn reset-btn">Reset Prompt</button>
       </div>
 
       <!-- Right: Avatar Selection -->
-
       <div class="avatar-display">
         <div class="avatar-header">
           <h1>Your avatar</h1>
@@ -166,11 +161,12 @@
       </div>
 
       <!-- Modal Overlay -->
-    <div id="avatar-modal" class="avatar-modal hidden">
-      <div class="modal-content">
-        <div class="modal-avatar"></div>
-        <button id="select-avatar-btn" class="select-btn">Select</button>
-        <button id="close-modal-btn" class="close-btn">x</button>
+      <div id="avatar-modal" class="avatar-modal hidden">
+        <div class="modal-content">
+          <div class="modal-avatar"></div>
+          <button id="select-avatar-btn" class="select-btn">Select</button>
+          <button id="close-modal-btn" class="close-btn">x</button>
+        </div>
       </div>
     </div>
   </div>

@@ -1,11 +1,11 @@
-console.log("✅ script.js is loaded");
+console.log("script.js is loaded");
 
 const initialPromptValues = {
   skin_colour: "{skin_colour}",
   age: "{age}",
   gender: "{gender}",
   primary_action: "{primary_action}",
-  context_activity: "{context_activity}",
+  context: "{context}",
   expression: "{expression}",
   hair_colour: "{hair_colour}",
   eye_colour: "{eye_colour}",
@@ -34,15 +34,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const age = get('age');
     const gender = get('gender');
     const primary_action = get('primary_action');
-    const context = get('context_activity');
+    const context = get('context');
     const expression = get('expression');
     const skin = get('skin_colour');
     const hair = get('hair_colour');
     const eyes = get('eye_colour');
     const imperfections = get('imperfections');
 
-    const base = `((A ${age}-year-old ${gender}::1.5) ${primary_action} ${context}, ${hair} hair, ${eyes} eyes, visible ${imperfections}, ${expression} expression)`;
-    const background = `(The background is mostly white, with little detailes::1.2)`;
+    const base = `((A ${age}-year-old ${gender}::1.5) while ${primary_action}, ${hair} hair, ${eyes} eyes, visible ${imperfections}, ${expression} expression)`;
+    const background = `(The background is ${context}, with little details::1.2)`;
     const nuance = `((KidV2 captures natural shadows::1.3) while (maintaining playful energy::1.4))`;
 
     return `${base}, ${background}, ${nuance}.`;
@@ -51,8 +51,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const generateBtn = document.querySelector('.generate-btn');
   if (generateBtn) {
     generateBtn.addEventListener('click', () => {
-      console.log("✅ Generate button was clicked");
-      alert("✅ Successfully started generating!");
+      console.log("Generate button was clicked");
+      alert("Successfully started generating!");
 
       const batchSize = document.getElementById("batch_size").value;
       console.log("Batch size:", batchSize);
@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const resetBtn = document.querySelector('.reset-btn');
   if (resetBtn) {
     resetBtn.addEventListener('click', () => {
-      console.log("✅ reset button was clicked");
+      console.log("Reset button was clicked");
 
       document.querySelectorAll('.form-grid select').forEach(select => {
         select.selectedIndex = 0;
@@ -115,15 +115,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const promptBox = document.querySelector('.prompt-box');
       if (promptBox) {
         promptBox.innerHTML =
-          `A <span data-placeholder="skin_colour">{skin_colour}</span> ` +
+          `A <span data-placeholder="skin_colour">{skin_colour}</span>, ` +
+          `<span data-placeholder="hair_colour">{hair_colour}</span>-haired, ` +
+          `<span data-placeholder="eye_colour">{eye_colour}</span>-eyed, ` +
           `<span data-placeholder="age">{age}</span>-year-old ` +
-          `<span data-placeholder="gender">{gender}</span> ` +
-          `<span data-placeholder="primary_action">{primary_action}</span> while ` +
-          `<span data-placeholder="context_activity">{context_activity}</span>, with a ` +
+          `<span data-placeholder="gender">{gender}</span> with ` +
+          `<span data-placeholder="imperfections">{imperfections}</span>, while ` +
+          `<span data-placeholder="primary_action">{primary_action}</span>, showing a ` +
           `<span data-placeholder="expression">{expression}</span> expression. ` +
-          `<span data-placeholder="hair_colour">{hair_colour}</span> hair, ` +
-          `<span data-placeholder="eye_colour">{eye_colour}</span> eyes, ` +
-          `<span data-placeholder="imperfections">{imperfections}</span>.`;
+          `The background is <span data-placeholder="context">{context}</span>, with little details.`;
       }
     });
   }
@@ -206,12 +206,12 @@ document.addEventListener("DOMContentLoaded", () => {
           return res.json();
         })
         .then(response => {
-          alert("✅ Avatar saved successfully!");
+          alert("Avatar saved successfully!");
           nameInput.value = "";
           document.querySelectorAll('.avatar-placeholder').forEach(ph => ph.classList.remove('selected'));
         })
         .catch(err => {
-          console.error("❌ Error saving avatar:", err);
+          console.error("Error saving avatar:", err);
           alert("There was a problem saving the avatar.");
         });
     });
