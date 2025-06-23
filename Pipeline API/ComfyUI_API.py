@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 import os
 import sys
 
+
 # Step 1: Initialize the connection settings and load environment variables
 print(colored("Step 1: Initialize the connection settings and load environment variables.", "cyan"))
 print(colored("Loading configuration from the .env file.", "yellow"))
@@ -112,6 +113,10 @@ def get_images(ws, prompt):
 
 # Generate images function with customizable input
 
+def get_workflow_path(filename="pipeline_workflow.json"):
+    base_path = getattr(sys, '_MEIPASS', os.path.abspath("."))
+    return os.path.join(base_path, filename)
+
 def generate_images(positive_prompt, batch_size, steps=30, resolution=(512, 512)):
     # Step 3: Establish WebSocket connection
     ws = websocket.WebSocket()
@@ -122,10 +127,8 @@ def generate_images(positive_prompt, batch_size, steps=30, resolution=(512, 512)
     
     # Step 4: Load workflow from file and print it
     print(colored("Step 4: Loading the image generation workflow from 'pipeline_workflow.json'.", "cyan"))
-    base_path = getattr(sys, '_MEIPASS', os.path.abspath("."))
-    workflow_path = os.path.join(base_path, "pipeline_workflow.json")
-
-    with open(workflow_path, "r") as f:
+    print("📂 Attempting to load workflow at:", get_workflow_path())
+    with open(get_workflow_path(), "r") as f:
         workflow = json.load(f)
 
     #input(colored("Press Enter to view the loaded workflow before customization...", "green"))

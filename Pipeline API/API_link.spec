@@ -5,7 +5,7 @@ a = Analysis(
     ['API_link.py'],
     pathex=['<your_path>\\Lib\\site-packages'],
     binaries=[],
-    datas=[],
+    datas=[('pipeline_workflow.json', '.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
