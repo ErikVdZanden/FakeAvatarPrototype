@@ -127,7 +127,7 @@ def generate_images(positive_prompt, batch_size, steps=30, resolution=(512, 512)
     
     # Step 4: Load workflow from file and print it
     print(colored("Step 4: Loading the image generation workflow from 'pipeline_workflow.json'.", "cyan"))
-    print("📂 Attempting to load workflow at:", get_workflow_path())
+    print("Attempting to load workflow at:", get_workflow_path())
     with open(get_workflow_path(), "r") as f:
         workflow = json.load(f)
 
