@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const eyes = get('eye_colour');
     const imperfections = get('imperfections');
 
-    const base = `((A ${age}-year-old ${gender}::1.5) ${primary_action} ${context}, ${hair} hair, ${eyes} eyes, (${imperfections}::1.3), (${expression} expression))`;
+    const base = `((A ${age}-year-old ${gender}::1.5) ${primary_action} ${context}, ${hair} hair, ${eyes} eyes, visible ${imperfections}, ${expression} expression)`;
     const background = `(The background is mostly white, with little detailes::1.2)`;
     const nuance = `((KidV2 captures natural shadows::1.3) while (maintaining playful energy::1.4))`;
 
