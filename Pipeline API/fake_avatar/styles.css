@@ -505,3 +505,69 @@ h2 {
   margin-top: 0.5rem;
   font-weight: bold;
 }
+
+#go-back-btn {
+  background-color: #7fa8d6;
+  border: none;
+  padding: 1rem;
+  border-radius: 25px;
+  font-size: 1.2rem;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#go-back-btn:hover {
+  background-color: #a0c1e8;
+}
+
+.avatar-container {
+  max-width: 800px;
+  margin: 0 auto;  /* centers the container horizontally */
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.avatar-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* center the avatars */
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.avatar-placeholder {
+  background-color: #fff;
+  border-radius: 10px;
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 0 5px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-placeholder img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+#download-selected-btn {
+  background-color: #7fa8d6;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 25px;
+  font-size: 1.2rem;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#download-selected-btn:hover {
+  background-color: #a0c1e8;
+}
+

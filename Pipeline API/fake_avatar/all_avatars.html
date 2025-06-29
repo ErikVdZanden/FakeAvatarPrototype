@@ -25,9 +25,39 @@
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-      const avatarsGrid = document.querySelector(".avatars-grid");
+  document.addEventListener("DOMContentLoaded", () => {
+    const avatarsGrid = document.querySelector(".avatars-grid");
 
+    // Placeholder avatars for testing without backend
+    const placeholderAvatars = [
+      { name: "Sunny", image: "https://i.pravatar.cc/150?img=1" },
+      { name: "Shadow", image: "https://i.pravatar.cc/150?img=2" },
+      { name: "Luna", image: "https://i.pravatar.cc/150?img=3" },
+      { name: "Nova", image: "https://i.pravatar.cc/150?img=4" }
+    ];
+
+    avatarsGrid.innerHTML = "";
+
+    placeholderAvatars.forEach(({ name, image }) => {
+      const card = document.createElement("a");  // make clickable link
+      card.classList.add("avatar-card");
+      card.href = `avatar.html?name=${encodeURIComponent(name)}`;
+
+      const img = document.createElement("img");
+      img.src = image;
+      img.alt = name;
+
+      const label = document.createElement("p");
+      label.textContent = name;
+
+      card.appendChild(img);
+      card.appendChild(label);
+      avatarsGrid.appendChild(card);
+    });
+
+    /*
+    // Original backend fetch code — uncomment when backend is ready
+    (async () => {
       try {
         const response = await fetch("http://127.0.0.1:8189/listAvatars");
         if (!response.ok) throw new Error("Failed to load avatars");
@@ -39,9 +69,12 @@
           return;
         }
 
+        avatarsGrid.innerHTML = "";
+
         avatars.forEach(({ name, image }) => {
-          const card = document.createElement("div");
+          const card = document.createElement("a");
           card.classList.add("avatar-card");
+          card.href = `avatar.html?name=${encodeURIComponent(name)}`;
 
           const img = document.createElement("img");
           img.src = `http://127.0.0.1:8189${image}`;
@@ -57,7 +90,9 @@
       } catch (err) {
         avatarsGrid.innerHTML = `<p>Error loading avatars: ${err.message}</p>`;
       }
-    });
-  </script>
+    })();
+    */
+  });
+</script>
 </body>
 </html>

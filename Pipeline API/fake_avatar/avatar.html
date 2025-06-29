@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Avatar Details</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="sidebar">
+    <a href="index.html"><img src="assets/images/logo.svg" alt="Logo"></a>
+    <a href="new_avatar.html"><img src="https://img.icons8.com/ios-filled/50/plus.png" alt="Create Avatar"></a>
+    <a href="all_avatars.html"><img src="https://img.icons8.com/ios-filled/50/menu.png" alt="All Avatars"></a>
+  </div>
+
+  
+  <div class="main avatar-details">
+    <button id="go-back-btn">← Go Back</button>
+    <h2 id="avatar-name">Loading...</h2>
+    <div id="avatar-images" class="avatars-grid"></div>
+  </div>
+
+<div class="avatar-container">
+  <div class="avatar-grid">
+    <!-- Your placeholder avatar images -->
+    <div class="avatar-placeholder"><img src="..." alt="avatar1"></div>
+    <div class="avatar-placeholder"><img src="..." alt="avatar2"></div>
+    <div class="avatar-placeholder"><img src="..." alt="avatar3"></div>
+    <div class="avatar-placeholder"><img src="..." alt="avatar4"></div>
+  </div>
+  <button id="download-selected-btn">Download Selected</button>
+</div>
+
+  <script>
+    document.getElementById('go-back-btn').addEventListener('click', () => {
+        window.location.href = 'all_avatars.html';
+    });
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      // Function to get query parameters
+      function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+      }
+
+      const avatarName = getQueryParam("name");
+      const avatarNameElem = document.getElementById("avatar-name");
+      const avatarImagesContainer = document.getElementById("avatar-images");
+
+      if (!avatarName) {
+        avatarNameElem.textContent = "No avatar specified.";
+        return;
+      }
+
+      avatarNameElem.textContent = avatarName;
+
+      try {
+        // Assuming your API can fetch data by name: e.g. /getAvatar?name=AvatarName
+        const response = await fetch(`http://127.0.0.1:8189/getAvatar?name=${encodeURIComponent(avatarName)}`);
+        if (!response.ok) throw new Error("Failed to load avatar data");
+
+        const avatar = await response.json();
+
+        if (!avatar || !avatar.images || avatar.images.length === 0) {
+          avatarImagesContainer.innerHTML = "<p>No images available for this avatar.</p>";
+          return;
+        }
+
+        // avatar.images is an array of image paths for this avatar
+        avatar.images.forEach((imgPath) => {
+          const img = document.createElement("img");
+          img.src = `http://127.0.0.1:8189${imgPath}`;
+          img.alt = avatarName;
+          avatarImagesContainer.appendChild(img);
+        });
+
+      } catch (err) {
+        avatarImagesContainer.innerHTML = `<p>Error loading avatar images: ${err.message}</p>`;
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const avatarCards = document.querySelectorAll('.avatar-card');
+        const downloadBtn = document.getElementById('download-selected');
+        const selectedImages = new Set();
+
+        avatarCards.forEach(card => {
+            card.addEventListener('click', () => {
+            const img = card.querySelector('img');
+            const imgSrc = img.src;
+
+            if (card.classList.contains('selected')) {
+                card.classList.remove('selected');
+                selectedImages.delete(imgSrc);
+            } else {
+                card.classList.add('selected');
+                selectedImages.add(imgSrc);
+            }
+
+            downloadBtn.disabled = selectedImages.size === 0;
+            });
+        });
+
+        downloadBtn.addEventListener('click', () => {
+            if (selectedImages.size === 0) return;
+
+            // Download each selected image
+            selectedImages.forEach(src => {
+            // Create an invisible anchor element to trigger download
+            const link = document.createElement('a');
+            link.href = src;
+            // Extract filename from URL or assign default
+            const urlParts = src.split('/');
+            let filename = urlParts[urlParts.length - 1].split('?')[0] || 'avatar.png';
+
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            });
+        });
+    });
+
+  </script>
+</body>
+</html>
