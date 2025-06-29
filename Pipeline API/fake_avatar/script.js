@@ -1,19 +1,20 @@
-console.log("script.js is loaded");
-
-const initialPromptValues = {
-  skin_colour: "{skin_colour}",
-  age: "{age}",
-  gender: "{gender}",
-  primary_action: "{primary_action}",
-  context: "{context}",
-  expression: "{expression}",
-  hair_colour: "{hair_colour}",
-  eye_colour: "{eye_colour}",
-  imperfections: "{imperfections}"
-};
-
 document.addEventListener("DOMContentLoaded", () => {
-  // Update prompt spans when a dropdown changes
+  const initialPromptValues = {
+    skin_colour: "{skin_colour}",
+    age: "{age}",
+    gender: "{gender}",
+    primary_action: "{primary action}",
+    context: "{context}",
+    expression: "{expression}",
+    hair_colour: "{hair colour}",
+    hair_length: "{hair length}",
+    hair_style: "{hair style}",
+    eye_colour: "{eye colour}",
+    imperfections: "{imperfections}",
+    clothing: "{clothing}"
+  };
+
+  // Update prompt spans when dropdown changes
   document.querySelectorAll('.form-grid select').forEach(select => {
     select.addEventListener('change', function () {
       const key = this.getAttribute('data-key');
@@ -25,108 +26,159 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  function buildBackendPrompt() {
-    const get = (key) => {
-      const span = document.querySelector(`.prompt-box [data-placeholder="${key}"]`);
-      return span ? span.textContent.trim() : '';
-    };
+function buildWeightedPrompt() {
+  const promptBox = document.querySelector(".prompt-box");
+  const nodes = Array.from(promptBox.childNodes);
 
-    const age = get('age');
-    const gender = get('gender');
-    const primary_action = get('primary_action');
-    const context = get('context');
-    const expression = get('expression');
-    const skin = get('skin_colour');
-    const hair = get('hair_colour');
-    const eyes = get('eye_colour');
-    const imperfections = get('imperfections');
+  const combinedKeys = ["age", "skin_colour", "gender"];
+  const getValue = (key) => {
+    return document.getElementById(key)?.value.trim() || initialPromptValues[key] || `{${key}}`;
+  };
 
-    const base = `((A ${age}-year-old ${gender}::1.5) while ${primary_action}, ${hair} hair, ${eyes} eyes, visible ${imperfections}, ${expression} expression)`;
-    const background = `(The background is ${context}, with little details::1.2)`;
-    const nuance = `((KidV2 captures natural shadows::1.3) while (maintaining playful energy::1.4))`;
+  let combinedPhraseParts = [];
+  let combinedStarted = false;
+  let combinedEnded = false;
 
-    return `${base}, ${background}, ${nuance}.`;
+  let restParts = [];
+
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i];
+
+    if (!combinedEnded) {
+      if (
+        (node.nodeType === Node.ELEMENT_NODE && combinedKeys.includes(node.dataset.placeholder)) ||
+        (node.nodeType === Node.TEXT_NODE && combinedStarted)
+      ) {
+        combinedStarted = true;
+
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          combinedPhraseParts.push(getValue(node.dataset.placeholder));
+        } else if (node.nodeType === Node.TEXT_NODE) {
+          combinedPhraseParts.push(node.textContent);
+        }
+
+        if (
+          node.nodeType === Node.ELEMENT_NODE &&
+          node.dataset.placeholder === combinedKeys[combinedKeys.length - 1]
+        ) {
+          combinedEnded = true;
+        }
+        continue;
+      }
+    }
+
+    if (combinedEnded) {
+      // Only after combined block ended, add nodes to restParts
+      if (node.nodeType === Node.TEXT_NODE) {
+        restParts.push(node.textContent);
+      } else if (node.nodeType === Node.ELEMENT_NODE && node.dataset.placeholder) {
+        restParts.push(getValue(node.dataset.placeholder));
+      }
+    } else {
+      // Before combined block started, add normally
+      if (node.nodeType === Node.TEXT_NODE) {
+        restParts.push(node.textContent);
+      } else if (node.nodeType === Node.ELEMENT_NODE && node.dataset.placeholder) {
+        restParts.push(getValue(node.dataset.placeholder));
+      }
+    }
   }
 
-  const generateBtn = document.querySelector('.generate-btn');
+  const combinedPhrase = combinedPhraseParts.join('').replace(/\s+/g, ' ').trim();
+  const weightedCombined = `A (${combinedPhrase} ::1.5)`;
+
+  let promptText = restParts.join('').replace(/\s*\n\s*/g, ' ').replace(/\s{2,}/g, ' ').trim();
+
+  // Weight the background
+  const bgMatch = promptText.match(/The background is .*?with little details\./i);
+  if (bgMatch) {
+    const bgText = bgMatch[0];
+    promptText = promptText.replace(bgText, `(${bgText}::1.2)`);
+  }
+
+  const nuance = `((KidV2 captures natural shadows::1.3) while (maintaining playful energy::1.4))`;
+
+  return `${weightedCombined} ${promptText} ${nuance}.`;
+}
+
+
+
+
+
+  // Generate button click
+  const generateBtn = document.querySelector('.generate-btn:not(.reset-btn)');
   if (generateBtn) {
     generateBtn.addEventListener('click', () => {
-      console.log("Generate button was clicked");
-      alert("Successfully started generating!");
+      console.log("Generate button clicked");
 
-      const batchSize = document.getElementById("batch_size").value;
+      const batchSize = document.getElementById("batch_size").value || "1";
       console.log("Batch size:", batchSize);
 
-      const promptText = buildBackendPrompt();
-      console.log("Sending prompt:", promptText, batchSize);
+      const promptText = buildWeightedPrompt();
+      console.log("Prompt to send:", promptText);
+
+      alert("Successfully started generating!");
 
       fetch('http://127.0.0.1:8189/generate', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
           prompt: promptText,
           batch_size: batchSize
         })
       })
-        .then(response => {
-          if (!response.ok) throw new Error("Failed to generate avatar");
-          return response.json();
-        })
-        .then(data => {
-          const avatars = data.images || [];
-          const avatarGrid = document.querySelector('.avatar-grid');
-          if (avatarGrid) {
-            avatarGrid.innerHTML = '';
-            avatars.forEach(url => {
-              const wrapper = document.createElement('div');
-              wrapper.classList.add('avatar-placeholder');
+      .then(response => {
+        if (!response.ok) throw new Error("Failed to generate avatar");
+        return response.json();
+      })
+      .then(data => {
+        const avatars = data.images || [];
+        const avatarGrid = document.querySelector('.avatar-grid');
+        if (avatarGrid) {
+          avatarGrid.innerHTML = '';
+          avatars.forEach(url => {
+            const wrapper = document.createElement('div');
+            wrapper.classList.add('avatar-placeholder');
 
-              const img = document.createElement('img');
-              img.src = `http://127.0.0.1:8189${url}`;
-              img.alt = "Generated Avatar";
-              img.style.width = '100%';
-              img.style.height = '100%';
-              img.style.objectFit = 'cover';
-              img.style.borderRadius = '10px';
+            const img = document.createElement('img');
+            img.src = `http://127.0.0.1:8189${url}`;
+            img.alt = "Generated Avatar";
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'cover';
+            img.style.borderRadius = '10px';
 
-              wrapper.appendChild(img);
-              avatarGrid.appendChild(wrapper);
-            });
-          }
-        })
-        .catch(error => {
-          console.error("Error generating avatar:", error);
-          alert("There was a problem generating the avatar.");
-        });
+            wrapper.appendChild(img);
+            avatarGrid.appendChild(wrapper);
+          });
+        }
+      })
+      .catch(error => {
+        console.error("Error generating avatar:", error);
+        alert("There was a problem generating the avatar.");
+      });
     });
   }
 
+  // Reset button click
   const resetBtn = document.querySelector('.reset-btn');
   if (resetBtn) {
     resetBtn.addEventListener('click', () => {
-      console.log("Reset button was clicked");
+      console.log("Reset button clicked");
 
       document.querySelectorAll('.form-grid select').forEach(select => {
-        select.selectedIndex = 0;
+        select.value = ""; // Reset all selects to default empty option
+        const key = select.getAttribute('data-key');
+        const span = document.querySelector(`.prompt-box [data-placeholder="${key}"]`);
+        if (span) {
+          span.textContent = initialPromptValues[key];
+        }
       });
-
-      const promptBox = document.querySelector('.prompt-box');
-      if (promptBox) {
-        promptBox.innerHTML =
-          `A <span data-placeholder="skin_colour">{skin_colour}</span>, ` +
-          `<span data-placeholder="hair_colour">{hair_colour}</span>-haired, ` +
-          `<span data-placeholder="eye_colour">{eye_colour}</span>-eyed, ` +
-          `<span data-placeholder="age">{age}</span>-year-old ` +
-          `<span data-placeholder="gender">{gender}</span> with ` +
-          `<span data-placeholder="imperfections">{imperfections}</span>, while ` +
-          `<span data-placeholder="primary_action">{primary_action}</span>, showing a ` +
-          `<span data-placeholder="expression">{expression}</span> expression. ` +
-          `The background is <span data-placeholder="context">{context}</span>, with little details.`;
-      }
     });
   }
+
+  // Modal and Save logic remain unchanged
+  // ...
 
   // Modal Logic
   const modal = document.getElementById('avatar-modal');
@@ -193,55 +245,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
       fetch('http://127.0.0.1:8189/saveImage', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
           name: avatarName,
           img: selectedImageSrc
         })
       })
-        .then(res => {
-          if (!res.ok) throw new Error("Failed to save avatar.");
-          return res.json();
-        })
-        .then(response => {
-          alert("Avatar saved successfully!");
-          nameInput.value = "";
-          document.querySelectorAll('.avatar-placeholder').forEach(ph => ph.classList.remove('selected'));
-        })
-        .catch(err => {
-          console.error("Error saving avatar:", err);
-          alert("There was a problem saving the avatar.");
-        });
-    });
-  }
-
-  // Load saved avatars (if on that page)
-  const avatarsGrid = document.querySelector(".avatars-grid");
-  if (avatarsGrid) {
-    const savedAvatars = JSON.parse(localStorage.getItem("avatars")) || [];
-    avatarsGrid.innerHTML = "";
-
-    if (savedAvatars.length === 0) {
-      avatarsGrid.innerHTML = "<p>No avatars saved yet.</p>";
-    } else {
-      savedAvatars.forEach(({ name, img }) => {
-        const card = document.createElement("div");
-        card.classList.add("avatar-card");
-
-        const image = document.createElement("img");
-        image.src = img;
-        image.alt = name;
-
-        const label = document.createElement("p");
-        label.textContent = name;
-
-        card.appendChild(image);
-        card.appendChild(label);
-
-        avatarsGrid.appendChild(card);
+      .then(res => {
+        if (!res.ok) throw new Error("Failed to save avatar.");
+        return res.json();
+      })
+      .then(response => {
+        alert("Avatar saved successfully!");
+        nameInput.value = "";
+        document.querySelectorAll('.avatar-placeholder').forEach(ph => ph.classList.remove('selected'));
+      })
+      .catch(err => {
+        console.error("Error saving avatar:", err);
+        alert("There was a problem saving the avatar.");
       });
-    }
+    });
   }
 });
