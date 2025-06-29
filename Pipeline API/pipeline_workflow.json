@@ -55,7 +55,7 @@
   },
   "25": {
     "inputs": {
-      "noise_seed": 965538661198236
+      "noise_seed": 412331770504786
     },
     "class_type": "RandomNoise",
     "_meta": {
@@ -64,7 +64,7 @@
   },
   "26": {
     "inputs": {
-      "guidance": 3,
+      "guidance": 2.5,
       "conditioning": [
         "6",
         0
@@ -277,7 +277,7 @@
   },
   "99": {
     "inputs": {
-      "noise_seed": 531108208834870
+      "noise_seed": 929349780385757
     },
     "class_type": "RandomNoise",
     "_meta": {
@@ -374,7 +374,7 @@
   },
   "107": {
     "inputs": {
-      "text": "((A 10-year-old girl::1.5) captures a selfie in the bedroom, visible moles, slightly uneven eyebrows, (The background is mostly white, with little detailes::1.2), ((KidV2 captures natural shadows::1.3) while (maintaining playful energy::1.4)) \n",
+      "text": "((A 10-year-old girl::1.5) captures a selfie in the bedroom, blonde hair, (visible moles::1.3), slightly uneven eyebrows, (The background is mostly white, with little detailes::1.2), ((KidV2 captures natural shadows::1.3) while (maintaining playful energy::1.4)) \n",
       "clip": [
         "105",
         1
