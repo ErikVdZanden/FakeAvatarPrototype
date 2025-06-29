@@ -145,7 +145,7 @@ def generate_images(positive_prompt, batch_size, steps=30, resolution=(512, 512)
     workflow["107"]["inputs"]["text"] = positive_prompt
 
     print(colored(f"Setting steps for generation: {steps}", "yellow"))
-    workflow["97"]["inputs"]["steps"] = steps
+    #workflow["97"]["inputs"]["steps"] = steps
 
     print(colored(f"Setting resolution to {resolution[0]}x{resolution[1]}", "yellow"))
     workflow["80"]["inputs"]["width"] = resolution[0]

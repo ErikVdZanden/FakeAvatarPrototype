@@ -85,7 +85,7 @@ function buildWeightedPrompt() {
   }
 
   const combinedPhrase = combinedPhraseParts.join('').replace(/\s+/g, ' ').trim();
-  const weightedCombined = `A (${combinedPhrase} ::1.5)`;
+  const weightedCombined = `A (${combinedPhrase}::1.5)`;
 
   let promptText = restParts.join('').replace(/\s*\n\s*/g, ' ').replace(/\s{2,}/g, ' ').trim();
 
