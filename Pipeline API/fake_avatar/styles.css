@@ -158,31 +158,31 @@ h2 {
   }
 
   .sidebar {
-    position: relative;        /* Changed from fixed */
-    height: 60px;            
+    position: relative;
+    height: 60px;
     width: 100%;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding: 1rem 0;           /* More vertical space */
-    gap: 1rem;                 /* Spacing between icons */
+    padding: 1rem 0;
+    gap: 1rem;
     overflow: hidden;
   }
 
   .sidebar a {
-    flex-shrink: 0;            /* Prevent icons from being squeezed */
-    padding: 1rem;           /* Better touch targets */
+    flex-shrink: 0;
+    padding: 1rem;
   }
 
   .sidebar img {
-    width: 30px;               /* Ensure consistent icon size */
+    width: 30px;
     height: 30px;
-    margin: 0;                 /* Reset margin */
+    margin: 0;
     filter: brightness(0) invert(1);
   }
 
   .main {
-    margin-left: 0;            /* No sidebar offset */
+    margin-left: 0;
     padding: 1rem;
     background-size: contain;
   }
@@ -225,7 +225,6 @@ h2 {
     background-position: top;
   }
 }
-
 
 /* ====== Create Avatar Page ====== */
 .create-avatar h1 {
@@ -345,8 +344,8 @@ h2 {
 
 .avatar-display {
   display: flex;
-  flex-direction: column; /* Stack vertically */
-  flex: 1; /* So it fills available space */
+  flex-direction: column;
+  flex: 1;
   margin-bottom: 1rem;
   max-width: 600px;
   min-width: 280px;
@@ -358,8 +357,6 @@ h2 {
 }
 
 /* ====== Avatar selector ====== */
-
-/* Modal Overlay */
 .avatar-modal {
   position: fixed;
   top: 0;
@@ -453,6 +450,12 @@ h2 {
   margin-bottom: 1rem;
 }
 
+.avatars-grid a {
+  text-decoration: none;
+  color: #375a85;
+  font-size: 1.1rem;
+}
+
 .search-bar {
   display: flex;
   align-items: center;
@@ -483,15 +486,29 @@ h2 {
 .avatars-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  max-width: 100%;
   gap: 1.5rem;
 }
 
+@media (min-width: 1200px) {
+  .avatars-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+
 .avatar-card {
-  background-color: white;
+  background-color: #a0c1e8;
   border-radius: 12px;
   overflow: hidden;
   text-align: center;
   padding: 0.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.avatar-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .avatar-card img {
@@ -501,7 +518,7 @@ h2 {
 }
 
 .avatar-card p {
-  color: black;
+  color: rgb(255, 255, 255);
   margin-top: 0.5rem;
   font-weight: bold;
 }
@@ -523,7 +540,7 @@ h2 {
 
 .avatar-container {
   max-width: 800px;
-  margin: 0 auto;  /* centers the container horizontally */
+  margin: 0 auto;
   padding: 2rem 1rem;
   text-align: center;
 }
@@ -531,7 +548,7 @@ h2 {
 .avatar-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center; /* center the avatars */
+  justify-content: center;
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
@@ -559,14 +576,12 @@ h2 {
 #download-selected-btn {
   background-color: #7fa8d6;
   border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 20px;
-  font-size: 1rem;
+  padding: 1rem 2rem;
+  border-radius: 25px;
+  font-size: 1.2rem;
   color: white;
   cursor: pointer;
   transition: background-color 0.3s;
-  display: block;
-  margin: 1.5rem auto 0 auto; /* centers horizontally and adds spacing */
 }
 
 #download-selected-btn:hover {
@@ -588,8 +603,8 @@ h2 {
 
 .avatar-detail-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.4rem;
   justify-items: center;
   align-items: center;
 }
@@ -602,34 +617,11 @@ h2 {
   border-radius: 10px;
 }
 
-.avatar-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
-
-.avatar-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.5rem;
-  margin-top: 2rem;
-}
-
-.button-wrapper {
-  margin-top: 2rem;
-  text-align: center;
-  width: 100%;
-}
-
-#download-selected-btn {
-  background-color: #7fa8d6;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 20px;
-  font-size: 1rem;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s;
+.avatar-image-wrapper {
+  background-color: #a0c1e8;
+  padding: 1rem;
+  border-radius: 15px;
+  margin-top: 1rem;
+  width: auto;
+  max-width: 800px;
 }
