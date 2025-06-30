@@ -101,10 +101,6 @@ function buildWeightedPrompt() {
   return `${weightedCombined} ${promptText} ${nuance}.`;
 }
 
-
-
-
-
   // Generate button click
   const generateBtn = document.querySelector('.generate-btn:not(.reset-btn)');
   if (generateBtn) {

@@ -559,15 +559,77 @@ h2 {
 #download-selected-btn {
   background-color: #7fa8d6;
   border: none;
-  padding: 1rem 2rem;
-  border-radius: 25px;
-  font-size: 1.2rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 20px;
+  font-size: 1rem;
   color: white;
   cursor: pointer;
   transition: background-color 0.3s;
+  display: block;
+  margin: 1.5rem auto 0 auto; /* centers horizontally and adds spacing */
 }
 
 #download-selected-btn:hover {
   background-color: #a0c1e8;
 }
 
+.avatar-detail-grid img {
+  width: 120px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.avatar-detail-grid img:hover {
+  transform: scale(1.05);
+}
+
+.avatar-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  justify-items: center;
+  align-items: center;
+}
+
+.avatar-detail-grid img {
+  width: 100%;
+  max-width: 250px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.avatar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.avatar-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.button-wrapper {
+  margin-top: 2rem;
+  text-align: center;
+  width: 100%;
+}
+
+#download-selected-btn {
+  background-color: #7fa8d6;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 20px;
+  font-size: 1rem;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}

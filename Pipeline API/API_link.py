@@ -86,6 +86,28 @@ def list_avatars():
 
     return jsonify(avatars)
 
+@app.route("/getAvatar", methods=["GET"])
+def get_avatar_images():
+    avatar_name = request.args.get("name")
+
+    if not avatar_name:
+        return jsonify({"error": "Missing avatar name"}), 400
+
+    folder_path = get_real_path("static", "saved_avatars", avatar_name)
+
+    if not os.path.exists(folder_path):
+        return jsonify({"error": "Avatar folder not found"}), 404
+
+    images = []
+    for file in os.listdir(folder_path):
+        if file.lower().endswith((".png", ".jpg", ".jpeg")):
+            images.append(f"/static/saved_avatars/{avatar_name}/{file}")
+
+    return jsonify({
+        "name": avatar_name,
+        "images": images
+    })
+
 def get_real_path(*path_parts):
     """
     Resolves paths correctly whether run from source or as an executable.

@@ -17,19 +17,8 @@
   <div class="main avatar-details">
     <button id="go-back-btn">← Go Back</button>
     <h2 id="avatar-name">Loading...</h2>
-    <div id="avatar-images" class="avatars-grid"></div>
+    <div id="avatar-images" class="avatar-detail-grid"></div>
   </div>
-
-<div class="avatar-container">
-  <div class="avatar-grid">
-    <!-- Your placeholder avatar images -->
-    <div class="avatar-placeholder"><img src="..." alt="avatar1"></div>
-    <div class="avatar-placeholder"><img src="..." alt="avatar2"></div>
-    <div class="avatar-placeholder"><img src="..." alt="avatar3"></div>
-    <div class="avatar-placeholder"><img src="..." alt="avatar4"></div>
-  </div>
-  <button id="download-selected-btn">Download Selected</button>
-</div>
 
   <script>
     document.getElementById('go-back-btn').addEventListener('click', () => {
@@ -78,49 +67,12 @@
         avatarImagesContainer.innerHTML = `<p>Error loading avatar images: ${err.message}</p>`;
       }
     });
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const avatarCards = document.querySelectorAll('.avatar-card');
-        const downloadBtn = document.getElementById('download-selected');
-        const selectedImages = new Set();
-
-        avatarCards.forEach(card => {
-            card.addEventListener('click', () => {
-            const img = card.querySelector('img');
-            const imgSrc = img.src;
-
-            if (card.classList.contains('selected')) {
-                card.classList.remove('selected');
-                selectedImages.delete(imgSrc);
-            } else {
-                card.classList.add('selected');
-                selectedImages.add(imgSrc);
-            }
-
-            downloadBtn.disabled = selectedImages.size === 0;
-            });
-        });
-
-        downloadBtn.addEventListener('click', () => {
-            if (selectedImages.size === 0) return;
-
-            // Download each selected image
-            selectedImages.forEach(src => {
-            // Create an invisible anchor element to trigger download
-            const link = document.createElement('a');
-            link.href = src;
-            // Extract filename from URL or assign default
-            const urlParts = src.split('/');
-            let filename = urlParts[urlParts.length - 1].split('?')[0] || 'avatar.png';
-
-            link.download = filename;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            });
-        });
-    });
-
   </script>
+  <!-- <div class="avatar-container">
+    <div class="avatar-grid" id="avatar-grid"></div>
+    <div class="button-wrapper">
+      <button id="download-selected-btn">Download Selected</button>
+    </div>
+  </div> -->
 </body>
 </html>
