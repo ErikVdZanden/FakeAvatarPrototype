@@ -1,9 +1,8 @@
 ('C:\\Users\\erikv\\OneDrive - Office 365 '
- 'Fontys\\Desktop\\FakeAvatarPrototype\\Pipeline '
- 'API\\build\\API_link\\PYZ-00.pyz',
+ 'Fontys\\Desktop\\FakeAvatarCode\\Pipeline API\\build\\API_link\\PYZ-00.pyz',
  [('ComfyUI_API',
    'C:\\Users\\erikv\\OneDrive - Office 365 '
-   'Fontys\\Desktop\\FakeAvatarPrototype\\Pipeline API\\ComfyUI_API.py',
+   'Fontys\\Desktop\\FakeAvatarCode\\Pipeline API\\ComfyUI_API.py',
    'PYMODULE'),
   ('IPython',
    'C:\\Users\\erikv\\.platformio\\penv\\Lib\\site-packages\\IPython\\__init__.py',

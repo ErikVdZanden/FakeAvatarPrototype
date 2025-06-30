@@ -162,14 +162,27 @@ function buildWeightedPrompt() {
     resetBtn.addEventListener('click', () => {
       console.log("Reset button clicked");
 
+      // Reset all selects
       document.querySelectorAll('.form-grid select').forEach(select => {
-        select.value = ""; // Reset all selects to default empty option
-        const key = select.getAttribute('data-key');
-        const span = document.querySelector(`.prompt-box [data-placeholder="${key}"]`);
-        if (span) {
-          span.textContent = initialPromptValues[key];
-        }
+        select.value = "";
       });
+
+      // Fully reset the prompt box HTML to the default structure
+      const promptBox = document.querySelector('.prompt-box');
+      promptBox.innerHTML = `
+        <span data-placeholder="age">{age}</span>-year-old 
+        <span data-placeholder="skin_colour">{skin_colour}</span> 
+        <span data-placeholder="gender">{gender}</span>, with 
+        <span data-placeholder="hair_length">{hair length}</span> 
+        <span data-placeholder="hair_style">{hair style}</span> 
+        <span data-placeholder="hair_colour">{hair colour}</span> hair, 
+        <span data-placeholder="eye_colour">{eye colour}</span> eyes and 
+        <span data-placeholder="imperfections">{imperfections}</span>, 
+        wearing a <span data-placeholder="clothing">{clothing}</span>, 
+        while <span data-placeholder="primary_action">{primary action}</span>, 
+        showing a <span data-placeholder="expression">{expression}</span> expression. 
+        The background is <span data-placeholder="context">{context}</span>, with little details.
+      `;
     });
   }
 
